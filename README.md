@@ -15,7 +15,7 @@ Production-ready Node.js backend for hospital Out-Patient Department (OPD) token
 ### 1. Setup Environment
 ```bash
 # Copy environment template
-cp .env.example .env
+.env
 
 # Add your Neon PostgreSQL connection string
 DATABASE_URL=postgresql://user:password@host:port/database
