@@ -6,6 +6,10 @@ import * as tokenService from '../services/tokenService.js';
 
 const router = express.Router();
 
+
+// I could have seprated routes according to domain but due to small
+//project size keeping all in one file for simplicity
+
 // Doctor endpoints
 router.post('/doctors', async (req, res) => {
   try {
