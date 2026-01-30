@@ -1,4 +1,4 @@
-import { query, queryOne } from '../db.js';
+import { query, queryOne } from '../server/db.js';
 
 export async function createSlot(doctorId, startTime, endTime, maxCapacity) {
   return queryOne(

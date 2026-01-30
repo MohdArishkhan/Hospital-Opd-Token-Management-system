@@ -1,4 +1,4 @@
-import { query, queryOne } from '../db.js';
+import { query, queryOne } from '../server/db.js';
 
 export async function createDoctor(name, specialty) {
   return queryOne(

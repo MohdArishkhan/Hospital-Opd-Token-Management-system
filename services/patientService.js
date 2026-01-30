@@ -1,4 +1,4 @@
-import { query, queryOne } from '../db.js';
+import { query, queryOne } from '../server/db.js';
 
 export async function createPatient(name, phone, patientType) {
   if (!['emergency', 'paid', 'followup', 'online'].includes(patientType)) {

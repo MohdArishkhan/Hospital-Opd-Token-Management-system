@@ -1,8 +1,8 @@
 import express from 'express';
-import * as doctorService from './services/doctorService.js';
-import * as slotService from './services/slotService.js';
-import * as patientService from './services/patientService.js';
-import * as tokenService from './services/tokenService.js';
+import * as doctorService from '../services/doctorService.js';
+import * as slotService from '../services/slotService.js';
+import * as patientService from '../services/patientService.js';
+import * as tokenService from '../services/tokenService.js';
 
 const router = express.Router();
 
