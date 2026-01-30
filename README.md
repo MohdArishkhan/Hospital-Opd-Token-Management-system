@@ -1,4 +1,4 @@
-# OPD Token Allocation Engine
+# OPD Token Allocation Engine (BACKEND ONLY)
 
 Production-ready Node.js backend for hospital Out-Patient Department (OPD) token allocation with PostgreSQL (Neon).
 
