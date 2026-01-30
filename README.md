@@ -262,6 +262,19 @@ PORT=3001
 - Comprehensive error handling
 - Clear naming conventions
 
+## Future Scalability
+
+- **API / Application Layer**: Keep servers stateless so they can be horizontally scaled behind a load balancer; use autoscaling groups or Kubernetes for capacity management.
+- **Database**: Start with a single Neon/Postgres instance; add read replicas for reporting and scale writes with partitioning/sharding or move hot tables to a dedicated cluster when write throughput grows.
+- **Realtime / Sockets**: Move Socket.IO pub/sub to Redis (or a managed pub/sub) so socket events can be propagated across multiple Node instances; consider managed WebSocket gateways when scaling globally.
+- **Caching**: Introduce Redis for session/cache, token lookups, and rate-limiting to reduce DB load and lower latency.
+- **Background Jobs**: Offload heavy or long-running work (reallocation, notifications) to a queue (BullMQ/RabbitMQ); scale workers independently.
+- **Static Assets / CDN**: Serve client assets and large static files via a CDN to reduce origin load and improve global latency.
+- **Observability & Alerts**: Add metrics (Prometheus), logs (structured logs to ELK/Datadog/Logflare), and tracing (OpenTelemetry) to detect performance regressions and bottlenecks early.
+- **CI/CD & IaC**: Use automated pipelines, infra-as-code (Terraform/CloudFormation), and blue/green or canary deployments to roll out changes safely.
+- **Data Migrations & Schema Evolution**: Use versioned migrations and backwards-compatible changes; orchestrate migrations during low-traffic windows and test on replicas.
+- **Global / Multi-region**: When latency/global presence matters, adopt read replicas or multi-region DB strategies and place application servers in multiple regions with geo-routing.
+
 ---
 
 Built as a production-ready system with clean architecture and comprehensive error handling.

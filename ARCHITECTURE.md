@@ -127,6 +127,33 @@ This system supports real-time push updates via Socket.IO (added to the Express 
    - For reliability: implement acknowledgment from clients to ensure they received updates.
    - For scale: use a message broker (Redis pub/sub) to propagate socket events across multiple Node instances and keep clients in rooms by `slotId` to minimize traffic.
 
+   ## Future Scalability
+
+   Below are recommended strategies to scale each layer of the system as load grows.
+
+   - **Frontend / Edge**: Move static assets to a CDN; use server-side rendering or edge functions (Next.js Edge) for low-latency pages. Cache public pages at the edge.
+   - **API / Application Layer**: Keep app instances stateless; deploy behind a load balancer and autoscale based on request/CPU. Use health checks and graceful shutdown to drain connections.
+   - **WebSocket / Realtime**: Replace in-process Socket.IO state with a distributed pub/sub (Redis, Kafka, or managed pub/sub) so multiple app instances can share events. Consider a dedicated WebSocket gateway or managed service for global scale.
+   - **Database (Postgres / Neon)**: Add read replicas for analytics and read-heavy workloads. For write scaling, consider partitioning hot tables, logical sharding, or moving extremely hot data (caches, sessions) to Redis. Ensure connection pooling (PgBouncer) and tune max connections.
+   - **Indexing & Query Optimization**: Monitor slow queries, add targeted indexes, and archive old records to keep active tables compact.
+   - **Background Jobs & Workers**: Offload reallocation, notification, and heavy workflows to a job queue (BullMQ/RabbitMQ). Autoscale workers separately from HTTP instances.
+   - **Caching Layer**: Use Redis for frequently-read data (slot summaries, token counts) and for distributed locks when handling concurrent allocations to prevent race conditions.
+   - **Storage & CDN**: Serve large or versioned assets via object storage + CDN; keep application origin for dynamic data only.
+   - **Service Decomposition**: Evolve to a modular microservices architecture if team and ops readiness allow—split heavy domains (token allocator, notification, analytics) to scale independently.
+   - **Observability & SLOs**: Add metrics (Prometheus), traces (OpenTelemetry), and structured logs to an aggregation service. Define SLOs and alerting thresholds for latency, error rates, and queue growth.
+   - **Deployment & Infra**: Use containers and orchestration (Kubernetes) or managed server groups; express resource requests/limits and leverage horizontal pod autoscaling. Keep deployments reproducible with IaC (Terraform).
+   - **Testing & Release Strategy**: Implement integration tests for allocation logic, canary deployments for risky changes, and automated performance tests that simulate peak OPD day loads.
+   - **Global / Multi-region**: For multi-region, prefer read replicas and geo-routing; handle cross-region consistency carefully (eventual consistency or user session affinity) and use multi-region queues or brokerage.
+   - **Operational Controls**: Add API rate-limits, throttling, circuit breakers, and graceful degradation modes (read-only or reduced features) for overload events.
+
+   ### Recommended Migration Path (priority)
+   1. Add Redis for caching and distributed pub/sub (low friction, immediate benefit).
+   2. Add a job queue and move non-critical tasks to workers.
+   3. Introduce read replicas and connection pooling (PgBouncer).
+   4. Containerize and enable autoscaling with health checks.
+   5. Move to multi-region and adopt managed WebSocket gateways if global presence required.
+
+
 
 ## Failure Handling
 
