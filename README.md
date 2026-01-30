@@ -242,7 +242,7 @@ Invalid patient types, missing slots, and duplicate phone numbers are caught and
 
 
 ```
-For database i have used PostgreSQL database from neon.
+For database i have used PostgreSQL database neon.
 DATABASE_URL=postgresql://user:password@host:port/database
 PORT=3001
 ```
